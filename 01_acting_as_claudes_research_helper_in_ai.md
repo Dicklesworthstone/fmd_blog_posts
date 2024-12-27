@@ -860,7 +860,7 @@ I tried to get it to be more concrete:
 
 > Well that's all pretty vague. How would you turn that into a series of actual layers/heads/activation functions/loss functions/optimizers using pytorch? What would be the biggest difference from the usual way Transformer and similar models are specified?
 
-Now we start getting something tangible, although even here there is a lot of vagueness in the code since it's not defining the basic functions it references:
+Now we start getting something tangible, although even here there is a lot of vagueness in the code since it's not defining the basic functions it references (**NOTE:** From this point on, there is going to be a LOT of long, dense code! If you don't want to read it all, just skip to the end and read the final comments and conclusion of the article!):
 
 
 Let me try to make this more concrete with pseudo-code and specific architectural choices:
