@@ -6938,11 +6938,11 @@ Or maybe someone who reads this post who is in a better position to understand i
 
 ---
 
-Thanks for sticking around long enough to finish this post! If you enjoyed reading it, *please* take a couple minutes to check out my new Web Application, FixMyDocuments.com! 
+Thanks for sticking around long enough to finish this post! If you enjoyed reading it, *please* take a couple minutes to check out my new Web Application, [FixMyDocuments.com](https://fixmydocuments.com/)! 
 
 It's genuinely useful for a variety of use cases. Here's how it works and what it does:
 
-You can submit any kind of document-- PDFs (including scanned PDFs that require OCR), MS Word and Powerpoint files, images, audio files (mp3, m4a, etc.), and turn them into highly optimized versions with nice markdown formatting, and it also automatically generates HTML and PDF versions, too.
+You can submit any kind of document— PDFs (including scanned PDFs that require OCR), MS Word and Powerpoint files, images, audio files (mp3, m4a, etc.), and turn them into highly optimized versions with nice markdown formatting, and it also automatically generates HTML and PDF versions, too.
 
 Once converted, you can also edit them directly in the site using the built-in markdown editor, where it saves a running revision history and automatically regenerates the PDF/HTML versions.
 
