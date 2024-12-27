@@ -10,9 +10,6 @@ authorImage: "https://pbs.twimg.com/profile_images/1225476100547063809/53jSWs7z_
 authorBio: "Software Engineer and Founder of FixMyDocuments"
 ---
 
-
-# Acting as Claude's Research Helper in AI
-
 Usually, when I use LLMs such as Claude 3.5 Sonnet or ChatGPT's o1, I am trying to learn more or to apply known techniques or known theory/practice that comes from published results and literature, as well as the vast corpus of examples and discussions that are included in the training sets of these models.
 
 But I occasionally like to speculate or dream a bit with these models. What's so stimulating to me about doing this is that these models have been exposed to an unbelievably vast amount of pure math. Not only does this include all the classic papers and textbooks across all areas of pure and applied math, but even to the extremely dense reference works such as the Stacks Project, which currently exceeds 7,000 pages of incredibly dense and hard math (see [this PDF](https://stacks.math.columbia.edu/download/book.pdf) to get an idea of what I'm talking about).
