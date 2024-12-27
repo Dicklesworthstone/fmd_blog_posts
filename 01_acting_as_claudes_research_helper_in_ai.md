@@ -6922,7 +6922,7 @@ Since O1-pro seemed to like the idea so much, I decided as one final thing to tr
 
 (I'd love to try this with the still-unreleased O3 model with a ton of inference level compute behind it— who knows what it could come up with?). In any case this was the final response, which took 6 minutes and 13 seconds for O1 to generate (and another few minutes to convert into a pure LaTeX document that I could process using Overleaf to generate an official-looking math paper):
 
-(A Memo from O1-Pro to Terry Tao on Cohomology AI)[https://raw.githubusercontent.com/Dicklesworthstone/cohomological_ai/refs/heads/main/a_memo_from_o1_pro_to_terry_tao.pdf] 
+[A Memo from O1-Pro to Terry Tao on Cohomology AI](https://raw.githubusercontent.com/Dicklesworthstone/cohomological_ai/refs/heads/main/a_memo_from_o1_pro_to_terry_tao.pdf)
 
 
 ## Conclusion
