@@ -6807,7 +6807,6 @@ Would you like to explore some more practical applications of these mathematical
 
 ---
 
-
 At this point, even though Claude isn't complaining that the context is too long and that I need to start a new conversation, it's starting to feel a bit unwieldy. We now have a TON of code, but it's not clear how integrated it all is into a cohesive library that we could actually use in practice. To that end, I decided to try my new OpenAI o1-pro subscription to see if it could help unify and take the best and most advanced aspects of all the code samples given and form them into a cohesive, unified, well-integrated library. 
 
 Everything up to now comprises 6,791 lines of text without word-wrapping, but the text file itself is only 266kb (in retrospect, *this* is the real reason why Claude didn't complain! It can handle up to around 500kb of text before it complains and forces you to start a new conversation! So much for my crazy anthropomorphizing fantasies!), so O1-pro *should* be able to handle it all.
@@ -6834,4 +6833,15 @@ One question I have: Do you think there might be some empirical validation possi
 
 ---
 
-Returning once more to the task of trying to get O1-pro to unify and improve all the code fragments Claude generated during our discussion, I tried it again but removed the initial theoretical discussion and instead started the context from when we started generating actual concrete code. Unfortunately, that also didn't work, but I 
+Returning once more to the task of trying to get O1-pro to unify and improve all the code fragments Claude generated during our discussion, I tried it again.
+
+
+## Conclusion
+
+As I admitted at the start, I'm not an expert in advanced math. I barely even know what shead cohomology is (I did watch a bunch of [interviews](https://www.webofstories.com/play/michael.atiyah/4;jsessionid=AB856186F881C04C42859CA5EA34EE88) with Michael Atiyah on WebOfStories, but I couldn't really follow him when he started getting into the details!).
+
+And I'm also certainly not a leading edge AI researcher. So how can we even know if all of this stuff is even legit, let alone helpful in advancing the state of the art? 
+
+Well, it seems like that is all eminently testable by gathering together all the code into a coherent library and then actually seeing if we can train a GPT-2 scale model on it (something that is now possible to do with a couple hours of compute using a big Lambda Labs training instance), and then see whether it out-performs a similarly scaled model trained using the traditional Transformer architecture. 
+
+Or maybe someone who reads this post who is in a better position to understand it can take it to the next level and really explorer the ideas at scale. Does that describe you? If so, I'd love to hear from you! You can make an issue or PR on the github repo for this post, which you can find [here](https://github.com/Dicklesworthstone/fmd_blog_posts).
