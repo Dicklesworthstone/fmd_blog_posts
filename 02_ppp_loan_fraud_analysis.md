@@ -1,5 +1,5 @@
 ---
-title: "Finding PPP Fraudsters: A Data Science Detective Story"
+title: "PPP Loan Fraud: A Data Science Detective Story"
 date: "2025-02-20"
 excerpt: "An investigation into the rampant fraud in the PPP loan program, powered by advanced data analysis."
 category: "Data Science"
@@ -1020,7 +1020,6 @@ This component preprocesses features (e.g., address indicators, demographic data
 #### Conclusion
 
 The secondary analysis system combines efficient data handling, statistical testing, and machine learning to detect patterns indicative of fraud in PPP loan data. From chi-square tests identifying categorical anomalies to XGBoost uncovering complex interactions, it provides a comprehensive framework for analysis, grounded in robust computational techniques.
-
 
 ---
 
