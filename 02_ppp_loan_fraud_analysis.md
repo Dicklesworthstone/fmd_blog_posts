@@ -10,8 +10,6 @@ authorImage: "https://pbs.twimg.com/profile_images/1225476100547063809/53jSWs7z_
 authorBio: "Software Engineer and Founder of FixMyDocuments"
 ---
 
-![PPP Illustration](https://github.com/Dicklesworthstone/ppp_loan_fraud_analysis/raw/main/ppp_illustration.webp)
-
 The Paycheck Protection Program (PPP) was a cornerstone of U.S. economic relief during the COVID-19 crisis, disbursing nearly $800 billion to small businesses. But with massive funds came massive fraud—hundreds of thousands, possibly over a million, loans exploited by opportunists. When I first explored the PPP’s 8.4GB dataset in a few days ago, I anticipated uncovering fraud. What I didn't expect was that I would end up with a system that systematically uncovered fraud networks and patterns across millions of loans, implicating hundreds of thousands of fraudulent borrowers and hundreds of corrupt lenders and agents. 
 
 This project comprises three scripts working in tandem:
