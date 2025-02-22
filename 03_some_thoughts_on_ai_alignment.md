@@ -1,7 +1,7 @@
 ---
 title: "Some Thoughts on AI Alignment: Using AI to Control AI"
 date: "2024-06-20"
-excerpt: "An investigation into creative proposals for how we can bette control AI and prevent bad outcomes for humanity."
+excerpt: "An investigation into creative proposals for how we can better control AI and prevent bad outcomes for humanity."
 category: "AI Alignment"
 tags: ["AI", "Alignment"]
 coverImage: "https://raw.githubusercontent.com/Dicklesworthstone/some_thoughts_on_ai_alignment/main/illustration.webp"
@@ -10,8 +10,7 @@ authorImage: "https://pbs.twimg.com/profile_images/1225476100547063809/53jSWs7z_
 authorBio: "Software Engineer and Founder of FixMyDocuments"
 ---
 
-
-I believe that it's basically impossible to make a single inherently safe AI in the form of an LLM or agent-based system. Recent research has shown that even if you put in strong safety safeguards in the training process or through careful RLHF processes, you can get around these through various kinds of prompt injections. Even worse, if you have access to the weights themselves, most refusal behavior is aligned to just a single direction in latent space according to [this](https://arxiv.org/abs/2406.11717) recent paper. By adding offsetting adjustments dynamically to the activations as the model is running, you can largely disable refusal behavior without crippling the analytical power of the LLM. All this suggests to me that trying to build in safety into a single model is thus a fool's errand.
+I believe that it's basically impossible to make a single inherently safe AI in the form of an LLM or agent-based system. Recent research has shown that even if you put in strong safety safeguards in the training process or through careful RLHF processes, you can get around these through various kinds of prompt injections. Even worse, if you have access to the weights themselves, most refusal behavior is aligned to just a single direction in latent space according to [this](https://arxiv.org/abs/2406.11717) recent paper. By adding offsetting adjustments dynamically to the activations as the model is running, you can largely disable refusal behavior without crippling the analytical power of the LLM. All this suggests to me that trying to build in safety into a single model is a fool's errand.
 
 Clearly, we can and should try to work on improving the robustness of foundational models against these sorts of things. There is a lot that has already been done to reduce the chances of prompt injection attacks; there are likely only so many clever tricks (like using ASCII art text, or encoding instructions as base64 data, etc.) for "smuggling" instructions past the normal filters. And there could even be ways to defend against the "single direction in latent space" problem with refusal behavior; for example, during training, this refusal behavior could somehow be "distributed" across many directions at once in latent space, such that if one attempted to remove it by making offsetting adjustments to activations, it would cause such a reduction in performance that it wouldn't be worth it.
 
