@@ -14,11 +14,11 @@ authorBio: "Software Engineer and Founder of FixMyDocuments"
 
 In the crowded space of LLM applications (referred to in a denigrating sense as "wrappers"), most tools follow a predictable pattern: feed text to an LLM and receive a straightforward response. But what if we want to extract structured, hierarchical knowledge from documents? What if we need to organize complex information into an intuitive format that captures relationships between concepts? This was the fundamental challenge that drove the development of the Mindmap Generator.
 
-The goal was ambitious: create a system that could take any text document—regardless of length, complexity, or domain—and generate a comprehensive, hierarchical mindmap that accurately represents its content. This wouldn't be a simple summarization task, but rather a complex knowledge extraction process that maintains fidelity to the source while organizing information into meaningful structures.
+The goal was ambitious: create a system that could take any text document, regardless of length, complexity, or domain, and generate a comprehensive, hierarchical mindmap that accurately represents its content. This wouldn't be a simple summarization task, but rather a complex knowledge extraction process that maintains fidelity to the source while organizing information into meaningful structures.
 
 ## The Problem Space
 
-Traditional LLM applications typically operate with a simple "prompt → response" paradigm. The Mindmap Generator needed something fundamentally different—an intelligent exploratory system that could:
+Traditional LLM applications typically operate with a simple "prompt → response" paradigm. The Mindmap Generator needed something fundamentally different— an intelligent exploratory system that could:
 
 1. Detect the document's type and adapt extraction strategies accordingly
 2. Identify main topics without missing critical content
@@ -34,7 +34,7 @@ Solving these problems required a departure from conventional approaches to LLM 
 
 ## Architecture: Beyond the Linear Pipeline
 
-The fundamental insight that drove the architecture was that document analysis isn't a linear process— it's an iterative exploration with complex dependencies and feedback loops. Unlike most LLM applications that follow a simple pipeline pattern, the Mindmap Generator employs what I call a "non-linear exploration model."
+The fundamental insight that drove the architecture was that document analysis isn't a linear process; it's an iterative exploration with complex dependencies and feedback loops. Unlike most LLM applications that follow a simple pipeline pattern, the Mindmap Generator employs what I call a "non-linear exploration model."
 
 Whereas traditional LLM applications typically follow a simple pattern:
 
@@ -73,7 +73,7 @@ Let's explore each of these phases in detail.
 
 ## Document Type Detection: The Foundation of Intelligent Extraction
 
-The cornerstone of the system is its ability to recognize different document types. This isn't simply a classification task—it's about understanding the fundamental structure and organization of information.
+The cornerstone of the system is its ability to recognize different document types. This isn't simply a classification task; it's about understanding the fundamental structure and organization of information.
 
 The code implements a sophisticated detection system that distinguishes between:
 
@@ -137,7 +137,7 @@ The prompt includes extensive differentiation criteria to help the LLM make fine
 
 ## The Challenge of Infinite Loops and Early Termination
 
-One of the most vexing problems in developing the system was preventing pathological runs—those that either never terminate or stop prematurely without extracting sufficient content.
+One of the most vexing problems in developing the system was preventing "pathological" runs: those that either never terminate or stop prematurely without extracting sufficient content.
 
 This challenge manifested in several ways:
 
@@ -245,7 +245,7 @@ This ensures the system doesn't generate more content than the original document
 
 ## The Redundancy Problem: Fighting Against Information Duplication
 
-One of the persistent challenges in developing the system was preventing redundancy— the same information appearing multiple times in different parts of the mindmap. This is particularly difficult because:
+One of the persistent challenges in developing the system was preventing redundancy, or the same information appearing multiple times in different parts of the mindmap. This is particularly difficult because:
 
 1. Similar concepts might be expressed using different language
 2. The same information might be relevant to multiple topics
@@ -410,7 +410,7 @@ VERIFICATION GUIDELINES:
 10. Consider historical and domain context that would be natural to include in an analysis
 ```
 
-This prompt allows for reasonable interpretation and synthesis—a mindmap isn't meant to be a direct quote of the document—while still rejecting claims that contradict or aren't supported by the source.
+This prompt allows for reasonable interpretation and synthesis (a mindmap isn't meant to be a direct quote of the document) while still rejecting claims that contradict or aren't supported by the source.
 
 ### Verification Statistics Tracking
 
@@ -708,7 +708,7 @@ The end result is a system that can efficiently process documents of arbitrary c
 
 4. **Domain Adaptation**: The document-type detection system allows effective adaptation to various domains without requiring specialized training.
 
-The most compelling validation came from the Durnovo Memo test case—a complex historical document that predicted World War I with remarkable accuracy. The system successfully extracted a comprehensive mindmap that captured the memo's key predictions and analyses, demonstrating its ability to handle sophisticated content.
+The most compelling validation came from the Durnovo Memo test case, a complex historical document that predicted World War I with remarkable accuracy. The system successfully extracted a comprehensive mindmap that captured the memo's key predictions and analyses, demonstrating its ability to handle sophisticated content.
 
 ## The Durnovo Memo: A Test Case Across LLM Providers
 
@@ -769,7 +769,7 @@ Gemini created a balanced mindmap with strong thematic organization:
 
 Although I am generally critical of Google's AI offerings when it comes to difficult coding challenges, I was pleasantly surprised by the quality of the output from Gemini, and it is the cheapest by far of the four models, with quite good performance. The main annoyance is how complicated and time-consuming it is to figure out how to get an API key that isn't rate-limited to death, which requires wading through endless, complex screens in their Google Cloud Console.
 
-If someone from Google is reading this: you guys really need to simplify this process and make a simple, standalone API key available for people who just want to use the Gemini API without all the extra stuff. This isn't rocket science-- you can literally just copy the interface from OpenAI, DeepSeek, or Anthropic for this. They've all figured out that you just need to make it really simple and obvious. You just need to get a credit card (or even use Google Pay) and generate an API key. It does not need to be integrated with the global system for all Google Cloud services on the front end (it can be on the backend, but that's an internal implementation detail and of no interest to potential users). You are preventing people from even trying your service my throwing up all these pointless barriers, presumably because of dysfunctional internal politics and bureaucracy.
+If someone from Google is reading this: you guys really need to simplify this process and make a simple, standalone API key available for people who just want to use the Gemini API without all the extra stuff. This isn't rocket science— you can literally just copy the interface from OpenAI, DeepSeek, or Anthropic for this. They've all figured out that you just need to make it really simple and obvious. You just need to get a credit card (or even use Google Pay) and generate an API key. It does not need to be integrated with the global system for all Google Cloud services on the front end (it can be on the backend, but that's an internal implementation detail and of no interest to potential users). You are preventing people from even trying your service my throwing up all these pointless barriers, presumably because of dysfunctional internal politics and bureaucracy.
 
 ### Key Observations from Cross-Provider Testing
 
