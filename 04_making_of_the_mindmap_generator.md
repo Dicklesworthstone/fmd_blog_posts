@@ -1474,7 +1474,7 @@ The system includes multiple layers of error handling:
 This comprehensive approach to JSON parsing addresses the common challenge of inconsistent LLM outputs. Rather than failing on imperfect responses, the system implements multiple recovery strategies that transform problematic text into usable data structures. This error recovery capability is essential for maintaining system reliability when working with inherently variable LLM outputs.
 
 
-## 📜 The Durnovo Memo: A Test Case Across LLM Providers
+## The Durnovo Memo: A Test Case Across LLM Providers
 
 This repository includes a fascinating historical document as a test case - the famous Durnovo memo from 1914, which remarkably predicted World War I and the Russian Revolution. For more about this incredible document, see my article about it [here](https://youtubetranscriptoptimizer.com/blog/04_the_most_impressive_prediction).
 
