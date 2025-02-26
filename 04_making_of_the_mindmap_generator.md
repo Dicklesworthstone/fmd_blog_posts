@@ -1473,6 +1473,78 @@ The system includes multiple layers of error handling:
 
 This comprehensive approach to JSON parsing addresses the common challenge of inconsistent LLM outputs. Rather than failing on imperfect responses, the system implements multiple recovery strategies that transform problematic text into usable data structures. This error recovery capability is essential for maintaining system reliability when working with inherently variable LLM outputs.
 
+
+## 📜 The Durnovo Memo: A Test Case Across LLM Providers
+
+This repository includes a fascinating historical document as a test case - the famous Durnovo memo from 1914, which remarkably predicted World War I and the Russian Revolution. For more about this incredible document, see my article about it [here](https://youtubetranscriptoptimizer.com/blog/04_the_most_impressive_prediction).
+
+### Historical Significance
+
+The [Durnovo Memorandum](sample_input_document_as_markdown__durnovo_memo.md) was written by Pyotr Durnovo, a Russian statesman, to Tsar Nicholas II in February 1914 - months before the outbreak of World War I. With astonishing prescience, Durnovo warned about:
+
+- The inevitability of war between Germany and Russia if European tensions continued
+- How such a war would lead to social revolution in Russia
+- The collapse of monarchies across Europe
+- The specific dangers Russia faced in a prolonged European conflict
+
+The memo has been hailed as one of the most accurate political predictions in modern history, making it an excellent test document for our mindmap generator.
+
+### Cross-Provider Comparison
+
+We've processed this document using all four supported LLM providers to demonstrate how each handles the complex historical content. The results showcase each provider's strengths and unique approaches to concept extraction and organization.
+
+#### OpenAI (GPT-4o-mini)
+
+OpenAI's model produced a concise, well-structured mindmap with clear hierarchical organization:
+
+- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__openai.txt) (2.8 KB)
+- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__openai.html) (5.7 KB)
+- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__openai.md) (2.5 KB)
+
+GPT-4o-mini excels at producing compact, efficient mindmaps that capture essential concepts without redundancy. Its output is characterized by clear categorization and precise language.
+
+#### Anthropic (Claude)
+
+Claude produced a more detailed mindmap with richer contextual information:
+
+- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__anthropic.txt) (4.1 KB)
+- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__anthropic.html) (7.3 KB)
+- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__anthropic.md) (3.8 KB)
+
+Claude's approach tends to include more nuanced historical context and captures subtle relationships between concepts. Its output is particularly strong in preserving the memo's analytical reasoning.
+
+#### DeepSeek
+
+DeepSeek generated the most comprehensive mindmap with extensive subtopics and details:
+
+- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__deepseek.txt) (9.0 KB)
+- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__deepseek.html) (15 KB)
+- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__deepseek.md) (8.4 KB)
+
+DeepSeek's output is notable for its thoroughness and depth of analysis. It extracts more subtleties from the document but occasionally at the cost of some redundancy.
+
+#### Google Gemini
+
+Gemini created a balanced mindmap with strong thematic organization:
+
+- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__gemini.txt) (5.5 KB)
+- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__gemini.html) (9.6 KB)
+- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__gemini.md) (5.0 KB)
+
+Gemini's approach focuses on thematic coherence, with particularly strong extraction of geopolitical concepts and causal relationships between events.
+
+### Key Observations from Cross-Provider Testing
+
+This multi-provider approach reveals interesting patterns:
+
+1. **Content Organization Differences**: Each provider structures the document's concepts differently, revealing their unique approaches to conceptual organization
+2. **Detail Granularity Variance**: The level of detail varies significantly, with DeepSeek providing the most comprehensive extraction and OpenAI the most concise
+3. **Emoji Selection Patterns**: Each model has distinct tendencies in selecting representative emojis for concepts
+4. **Historical Context Sensitivity**: Models differ in how they handle historical context, with Claude showing particular strength in preserving historical nuance
+5. **Structured Knowledge Representation**: The differences highlight various approaches to knowledge organization from the different AI research teams
+
+The sample outputs serve as both demonstration of the tool's capabilities and an interesting comparative study of how different LLM providers approach the same complex historical document.
+
 ## Conclusion: Beyond Traditional LLM Applications
 
 The Mindmap Generator represents a departure from conventional approaches to LLM applications. Rather than treating LLMs as simple text-in/text-out systems, it leverages them as components in a sophisticated cognitive architecture.
