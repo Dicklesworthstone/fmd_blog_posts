@@ -1,5 +1,5 @@
 ---
-title: "Engineering the Mindmap Generator: Taming LLMs for Hierarchical Document Analysis"
+title: "Engineering the Mindmap Generator: Marshalling LLMs for Hierarchical Document Analysis"
 date: "2025-02-25"
 excerpt: "How I designed and engineered the Mindmap Generator, a tool for analyzing and distilling documents."
 category: "LLM Application Engineering"
@@ -12,7 +12,7 @@ authorBio: "Software Engineer and Founder of FixMyDocuments"
 
 ## Introduction
 
-In the crowded space of LLM applications, most tools follow a predictable pattern: feed text to an LLM and receive a straightforward response. But what if we want to extract structured, hierarchical knowledge from documents? What if we need to organize complex information into an intuitive format that captures relationships between concepts? This was the fundamental challenge that drove the development of the Mindmap Generator.
+In the crowded space of LLM applications (referred to in a denigrating sense as "wrappers"), most tools follow a predictable pattern: feed text to an LLM and receive a straightforward response. But what if we want to extract structured, hierarchical knowledge from documents? What if we need to organize complex information into an intuitive format that captures relationships between concepts? This was the fundamental challenge that drove the development of the Mindmap Generator.
 
 The goal was ambitious: create a system that could take any text document—regardless of length, complexity, or domain—and generate a comprehensive, hierarchical mindmap that accurately represents its content. This wouldn't be a simple summarization task, but rather a complex knowledge extraction process that maintains fidelity to the source while organizing information into meaningful structures.
 
@@ -34,7 +34,28 @@ Solving these problems required a departure from conventional approaches to LLM 
 
 ## Architecture: Beyond the Linear Pipeline
 
-The fundamental insight that drove the [architecture](https://raw.githubusercontent.com/Dicklesworthstone/mindmap-generator/refs/heads/main/screenshots/mindmap-architecture.png) was that document analysis isn't a linear process—it's an iterative exploration with complex dependencies and feedback loops. Unlike most LLM applications that follow a simple pipeline pattern, the Mindmap Generator employs what I call a "non-linear exploration model."
+The fundamental insight that drove the architecture was that document analysis isn't a linear process— it's an iterative exploration with complex dependencies and feedback loops. Unlike most LLM applications that follow a simple pipeline pattern, the Mindmap Generator employs what I call a "non-linear exploration model."
+
+Whereas traditional LLM applications typically follow a simple pattern:
+
+```
+Input → LLM Prompt → Output
+```
+
+Or perhaps a pipeline:
+
+```
+Input → LLM Prompt 1 → Output 1 → LLM Prompt 2 → Output 2 → Final Result
+```
+
+The Mindmap Generator operates as a multi-dimensional exploration system, where:
+
+1. **Multiple parallel processes** explore different aspects of the document simultaneously
+2. **Feedback loops** evaluate the quality and uniqueness of extracted information
+3. **Heuristic-guided decisions** determine when to explore deeper or stop exploration
+4. **Verification mechanisms** ensure factual accuracy throughout
+
+This approach allows the system to efficiently navigate the vast conceptual space of the document while maintaining coherence and accuracy.
 
 At its core, the system employs a multi-phase approach:
 
@@ -45,6 +66,8 @@ At its core, the system employs a multi-phase approach:
 5. **Content Verification**: Generated content is verified against the source document
 6. **Redundancy Elimination**: Multiple passes detect and remove duplicative content
 7. **Hierarchical Organization**: The final structure is assembled into a coherent mindmap
+
+![Mindmap Architecture:](https://raw.githubusercontent.com/Dicklesworthstone/mindmap-generator/refs/heads/main/screenshots/mindmap-architecture.svg)
 
 Let's explore each of these phases in detail.
 
@@ -74,16 +97,40 @@ For each document type, the system employs specialized prompt templates optimize
 
 For example, technical documents focus on components, interfaces, and implementations, while narrative documents emphasize plot elements, character development, and themes. This adaptive approach significantly enhances extraction quality by aligning with the document's inherent organization.
 
-Implementing this detection system wasn't trivial. The challenge was developing a prompt that could reliably distinguish between document types without being overly complicated. The solution involved carefully constructed discriminative features for each document type, combined with a detection prompt that encourages the LLM to reason through the classification:
+Implementing this detection system wasn't trivial. The challenge was developing a prompt that could reliably distinguish between document types without being overly complicated. The solution involved carefully constructed discriminative features for each document type, combined with a detection prompt that encourages the LLM to reason through the classification (note that this just shows a portion of all the document types from the prompt):
 
-```
+```markdown
 You are analyzing a document to determine its primary type and structure. This document requires the most appropriate conceptual organization strategy.
 
 Key characteristics of each document type:
 
-TECHNICAL
-- Contains system specifications, API documentation, or implementation details
-...
+    TECHNICAL
+    - Contains system specifications, API documentation, or implementation details
+    - Focuses on HOW things work and technical implementation
+    - Uses technical terminology, code examples, or system diagrams
+    - Structured around components, modules, or technical processes
+    Example indicators: API endpoints, code blocks, system requirements, technical specifications
+
+    SCIENTIFIC
+    - Presents research findings, experimental data, or scientific theories
+    - Follows scientific method with hypotheses, methods, results
+    - Contains statistical analysis or experimental procedures
+    - References prior research or scientific literature
+    Example indicators: methodology sections, statistical results, citations, experimental procedures
+
+    NARRATIVE
+    - Tells a story or presents events in sequence
+    - Has character development or plot progression
+    - Uses descriptive language and scene-setting
+    - Organized chronologically or by story elements
+    Example indicators: character descriptions, plot developments, narrative flow, dialogue
+
+    BUSINESS
+    - Focuses on business operations, strategy, or market analysis
+    - Contains financial data or business metrics
+    - Addresses organizational or market challenges
+    - Includes business recommendations or action items
+    Example indicators: market analysis, financial projections, strategic plans, ROI calculations
 ```
 
 The prompt includes extensive differentiation criteria to help the LLM make fine-grained distinctions, such as the difference between technical and procedural documents or scientific and academic papers.
@@ -198,7 +245,7 @@ This ensures the system doesn't generate more content than the original document
 
 ## The Redundancy Problem: Fighting Against Information Duplication
 
-Perhaps the most persistent challenge in developing the system was preventing redundancy—the same information appearing multiple times in different parts of the mindmap. This is particularly difficult because:
+One of the persistent challenges in developing the system was preventing redundancy— the same information appearing multiple times in different parts of the mindmap. This is particularly difficult because:
 
 1. Similar concepts might be expressed using different language
 2. The same information might be relevant to multiple topics
@@ -320,7 +367,7 @@ This multi-layered approach ensures redundancy is caught at every level of the h
 
 ## The Confabulation Problem: Ensuring Factual Accuracy
 
-Perhaps the most insidious problem in LLM-based document analysis is confabulation—the generation of plausible-sounding but fictional content not supported by the source document. This happens because LLMs naturally fill in gaps based on their training data.
+Perhaps the most insidious problem in LLM-based document analysis is what I would call "confabulation," or the generation of plausible-sounding content not supported by the source document. This is slightly different from the better known "hallucination" problem, because in many cases, these details might very well be true, but they are not contained in or derivable from the particular source document we are using. This happens because LLMs naturally fill in gaps based on their training data; that is, they already have all sorts of knowledge about the world, and sometimes can't help piping up when they think they can usefully add something. But this leads to some highly undesirable outcomes. For example, when we processed a document from 1914 (see below), before adding in the systems to avoid confabulation, the system would often add in details about statistics from 2023 or other anachronistic information.
 
 To combat this, the Mindmap Generator implements a comprehensive verification system:
 
@@ -348,9 +395,7 @@ Task: Determine if this {node_type} is supported by the document text or could b
 Path: {path_str}
 
 Document chunk:
-```
 {chunk}
-```
 
 VERIFICATION GUIDELINES:
 1. The {node_type} can be EXPLICITLY mentioned OR reasonably inferred from the document, even through logical deduction
@@ -386,83 +431,6 @@ verification_stats = {
 ```
 
 These statistics help assess the overall accuracy of the mindmap and identify potential issues.
-
-### Structural Preservation with Verification
-
-A key insight in the verification system is balancing factual accuracy with structural coherence. If verification is too strict, it might remove too much content and break the mindmap's structure:
-
-```python
-# Check if we need to preserve structure despite verification results
-min_topics_required = 3
-min_verification_ratio = 0.4  # Lower threshold - only filter if less than 40% verified
-
-# Count verified topics
-verified_topics = len([n for n in all_nodes if n.get('type') == 'topic' and n.get('verified', False)])
-
-# If verification removed too much content, we need to preserve structure
-if verified_topics < min_topics_required or verification_percentage < min_verification_ratio * 100:
-    logger.warning(f"Verification would remove too much content (only {verified_topics} topics verified). Using preservation mode.")
-    
-    # Mark important structural nodes as verified to preserve mindmap structure
-    for node in all_nodes:
-        # Always keep root and topic nodes
-        if node.get('type') in ['root', 'topic']:
-            node['verified'] = True
-        # Keep subtopics with a high enough importance
-        elif node.get('type') == 'subtopic' and not node.get('verified', False):
-            # Keep subtopics if they have verified details or are needed for structure
-            has_verified_details = any(
-                n.get('verified', False) and n.get('type') == 'detail' and n.get('path') == node.get('path', []) + [node.get('text', '')]
-                for n in all_nodes
-            )
-            if has_verified_details:
-                node['verified'] = True
-```
-
-This preservation mode ensures that even if some content can't be strictly verified, the overall structure remains coherent and useful.
-
-## Balancing Cost and Quality
-
-A critical engineering challenge was balancing the quality of extraction against computational cost. LLM API calls are expensive, especially for sophisticated models, and naive implementations could easily rack up substantial costs.
-
-The system implements multiple cost-optimization strategies:
-
-### Provider-Specific Adjustments
-
-The system adapts its token usage and prompt design based on the LLM provider:
-
-```python
-# Cost tracking (prices in USD per token)
-OPENAI_INPUT_TOKEN_PRICE = 0.15/1000000  # GPT-4o-mini input price
-OPENAI_OUTPUT_TOKEN_PRICE = 0.60/1000000  # GPT-4o-mini output price
-ANTHROPIC_INPUT_TOKEN_PRICE = 0.80/1000000  # Claude 3.5 Haiku input price
-ANTHROPIC_OUTPUT_TOKEN_PRICE = 4.00/1000000  # Claude 3.5 Haiku output price
-DEEPSEEK_CHAT_INPUT_PRICE = 0.27/1000000  # Chat input price (cache miss)
-DEEPSEEK_CHAT_OUTPUT_PRICE = 1.10/1000000  # Chat output price
-DEEPSEEK_REASONER_INPUT_PRICE = 0.14/1000000  # Reasoner input price (cache miss)
-DEEPSEEK_REASONER_OUTPUT_PRICE = 2.19/1000000  # Reasoner output price (includes CoT)
-GEMINI_INPUT_TOKEN_PRICE = 0.075/1000000  # Gemini 2.0 Flash Lite input price estimate
-GEMINI_OUTPUT_TOKEN_PRICE = 0.30/1000000  # Gemini 2.0 Flash Lite output price estimate
-```
-
-This allows for precise cost tracking and optimization based on the selected provider.
-
-### Intelligent Caching
-
-The system implements extensive caching to avoid redundant API calls:
-
-```python
-# Check cache first for document type with strict caching
-doc_type_key = hashlib.md5(document_content[:1000].encode()).hexdigest()
-if doc_type_key in self._content_cache:
-    doc_type = self._content_cache[doc_type_key]
-else:
-    doc_type = await self.detect_document_type(document_content, request_id)
-    self._content_cache[doc_type_key] = doc_type
-    self._llm_calls['topics'] += 1
-```
-
-Similar caching is implemented for topics, subtopics, details, and even emoji selections.
 
 ### Parallel Processing with Rate Limiting
 
@@ -504,53 +472,6 @@ if not should_continue:
 
 This heuristic-based approach ensures the system focuses computational resources where they provide the most value.
 
-## The Challenges of Working with Different LLM Providers
-
-A unique aspect of this project was designing a system that could work effectively with multiple LLM providers. Each provider has different strengths, limitations, and quirks:
-
-### OpenAI's GPT Models
-
-OpenAI models excel at concise, structured responses but can sometimes be overly terse. The system adapts to this by:
-
-1. Using more explicit prompt instructions
-2. Breaking complex tasks into simpler steps
-3. Employing more aggressive redundancy checks
-
-### Anthropic's Claude Models
-
-Claude models are particularly good at following detailed instructions and maintaining context, but can sometimes be more verbose. Adaptations include:
-
-1. Leaner prompts that rely on Claude's instruction-following capacity
-2. More aggressive truncation of responses
-3. Different threshold settings for content extraction
-
-### Gemini and DeepSeek Models
-
-These newer models have different characteristics that require specific adaptations:
-
-```python
-elif Config.API_PROVIDER == "GEMINI":
-    # Use Gemini's live connection API for interactive chat
-    response_text = ""
-    # Track token usage for Gemini (estimated based on input/output text)
-    char_to_token_ratio = 4  # rough estimate: 4 chars per token
-    
-    # Use the correct models.generate_content method as shown in the documentation
-    try:
-        response = self.gemini_client.models.generate_content(
-            model=Config.GEMINI_MODEL_STRING,
-            contents=prompt,
-        )
-        response_text = response.text
-    except Exception as model_error:
-        logger.error(f"Gemini API error: {str(model_error)}")
-        return None
-```
-
-For Gemini, the system uses character-based estimations for token tracking, since Gemini's API doesn't provide token counts directly.
-
-The ability to work with multiple providers enhances the system's flexibility and resilience, while also allowing for comparison of performance across different models.
-
 ## The Emoji Selection Subsystem
 
 A seemingly minor but surprisingly complex component of the system is the emoji selection subsystem. This enhances the visual representation of concepts in the mindmap:
@@ -590,7 +511,7 @@ The result is a visually enhanced mindmap where each concept has an intuitive em
 
 ## Asynchronous Design Patterns
 
-A key architectural decision was implementing the system using asynchronous programming patterns. This wasn't just for performance—it was essential for handling the complex dependencies and parallel operations:
+An important architectural decision was implementing the system using asynchronous programming patterns. This wasn't just for performance— it was essential for handling the complex dependencies and parallel operations:
 
 ```python
 async def _retry_with_exponential_backoff(self, func, *args, **kwargs):
@@ -789,6 +710,78 @@ The end result is a system that can efficiently process documents of arbitrary c
 
 The most compelling validation came from the Durnovo Memo test case—a complex historical document that predicted World War I with remarkable accuracy. The system successfully extracted a comprehensive mindmap that captured the memo's key predictions and analyses, demonstrating its ability to handle sophisticated content.
 
+## The Durnovo Memo: A Test Case Across LLM Providers
+
+This repository includes a fascinating historical document as a test case - the famous Durnovo memo from 1914, which remarkably predicted World War I and the Russian Revolution. For more about this incredible document, see my article about it [here](https://youtubetranscriptoptimizer.com/blog/04_the_most_impressive_prediction).
+
+### Historical Significance
+
+The [Durnovo Memorandum](sample_input_document_as_markdown__durnovo_memo.md) was written by Pyotr Durnovo, a Russian statesman, to Tsar Nicholas II in February 1914, months before the outbreak of World War I. With astonishing prescience, Durnovo warned about:
+
+- The inevitability of war between Germany and Russia if European tensions continued
+- How such a war would lead to social revolution in Russia
+- The collapse of monarchies across Europe
+- The specific dangers Russia faced in a prolonged European conflict
+
+The memo has been hailed as one of the most accurate political predictions in modern history (indeed, the title of my article about it is *"The Most Impressive Prediction of All Time"*). It's long, complex, and makes sophisticated arguments based on evidence, logic, and analysis, all of which makes it an excellent test document for putting the mindmap generator through its paces.
+
+### Cross-Provider Comparison
+
+We've processed this document using all four supported LLM providers to demonstrate how each handles the complex historical content. The results showcase each provider's strengths and unique approaches to concept extraction and organization.
+
+#### OpenAI (GPT-4o-mini)
+
+OpenAI's model produced a concise, well-structured mindmap with clear hierarchical organization:
+
+- [Mermaid Syntax](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__openai.txt) (2.8 KB)
+- [Interactive HTML](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__openai.html) (5.7 KB)
+- [Markdown Outline](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__openai.md) (2.5 KB)
+
+GPT-4o-mini excels at producing compact, efficient mindmaps that capture essential concepts without redundancy. Its output is characterized by clear categorization and precise language. Best of all, it's incredibly fast and cheap.
+
+#### Anthropic (Claude)
+
+Claude produced a more detailed mindmap with richer contextual information:
+
+- [Mermaid Syntax](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__anthropic.txt) (4.1 KB)
+- [Interactive HTML](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__anthropic.html) (7.3 KB)
+- [Markdown Outline](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__anthropic.md) (3.8 KB)
+
+Claude's approach tends to include more nuanced historical context and captures subtle relationships between concepts. Its output is particularly strong in preserving the memo's analytical reasoning. The only problem is cost: it is many times more expensive than all the other options, but the results are not necessarily better.
+
+#### DeepSeek
+
+DeepSeek generated the most comprehensive mindmap with extensive subtopics and details:
+
+- [Mermaid Syntax](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__deepseek.txt) (9.0 KB)
+- [Interactive HTML](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__deepseek.html) (15 KB)
+- [Markdown Outline](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__deepseek.md) (8.4 KB)
+
+DeepSeek's output is notable for its thoroughness and depth of analysis, although I didn't like how it kept referencing "the text" in its extracted details, unlike the other models (this could easily be fixed by tweaking the prompts, though). It extracts more subtleties from the document and was generally very strong. The only issue I noticed in my testing was some performance and reliability issues with their API; it seemed to run much more slowly than, say, the OpenAI model.
+
+#### Google Gemini
+
+Gemini created a balanced mindmap with strong thematic organization:
+
+- [Mermaid Syntax](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__gemini.txt) (5.5 KB)
+- [Interactive HTML](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__gemini.html) (9.6 KB)
+- [Markdown Outline](https://github.com/Dicklesworthstone/mindmap-generator/blob/main/mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__gemini.md) (5.0 KB)
+
+Although I am generally critical of Google's AI offerings when it comes to difficult coding challenges, I was pleasantly surprised by the quality of the output from Gemini, and it is the cheapest by far of the four models, with quite good performance. The main annoyance is how complicated and time-consuming it is to figure out how to get an API key that isn't rate-limited to death, which requires wading through endless, complex screens in their Google Cloud Console.
+
+If someone from Google is reading this: you guys really need to simplify this process and make a simple, standalone API key available for people who just want to use the Gemini API without all the extra stuff. This isn't rocket science-- you can literally just copy the interface from OpenAI, DeepSeek, or Anthropic for this. They've all figured out that you just need to make it really simple and obvious. You just need to get a credit card (or even use Google Pay) and generate an API key. It does not need to be integrated with the global system for all Google Cloud services on the front end (it can be on the backend, but that's an internal implementation detail and of no interest to potential users). You are preventing people from even trying your service my throwing up all these pointless barriers, presumably because of dysfunctional internal politics and bureaucracy.
+
+### Key Observations from Cross-Provider Testing
+
+This multi-provider approach reveals interesting patterns:
+
+1. **Content Organization Differences**: Each provider structures the document's concepts differently, revealing their unique approaches to conceptual organization
+2. **Detail Granularity Variance**: The level of detail varies significantly, with DeepSeek providing the most comprehensive extraction and OpenAI the most concise
+3. **Emoji Selection Patterns**: Each model has distinct tendencies in selecting representative emojis for concepts
+4. **Historical Context Sensitivity**: Models differ in how they handle historical context, with Claude showing particular strength in preserving historical nuance
+5. **Structured Knowledge Representation**: The differences highlight various approaches to knowledge organization from the different AI research teams
+
+The sample outputs serve as both demonstration of the tool's capabilities and an interesting comparative study of how different LLM providers approach the same complex historical document.
 
 ## Integrated Logging System for Process Visualization
 
@@ -825,7 +818,7 @@ In a system with multiple concurrent processes and non-linear execution flow, th
 
 ## Semantic Boundary Preservation in Text Chunking
 
-The Mindmap Generator employs an advanced text chunking strategy that goes well beyond simple character-count splitting. This approach recognizes that proper handling of document boundaries is crucial for maintaining semantic coherence:
+To avoid overwhelming the model's context windows (and even if we can fit within the context windows, with these "value priced" models, the more context you use, the worse the models perform in a very drastic way), we employ a text chunking strategy that goes well beyond simple character-count splitting. This approach recognizes that proper handling of document boundaries is crucial for maintaining semantic coherence:
 
 ```python
 # Create overlapping chunks with boundary optimization
@@ -858,7 +851,7 @@ By preserving semantic units and maintaining context across chunk boundaries, th
 
 ## Multi-Metric Similarity Detection for Redundancy Elimination
 
-The Mindmap Generator implements a sophisticated redundancy detection system that combines multiple similarity metrics to identify conceptual duplicates even when they use different phrasing:
+We also implement a fairly sophisticated redundancy detection system that combines multiple similarity metrics to identify conceptual duplicates even when they use different phrasing:
 
 ```python
 # Calculate multiple similarity metrics
@@ -984,37 +977,46 @@ This implementation provides several technical advantages:
 
 This approach illustrates the engineering challenge of balancing competing requirements - in this case, factual accuracy versus structural coherence. The system resolves this tension through nuanced preservation strategies that maintain output utility even when strict verification cannot be fully achieved.
 
-## Comparative Analysis Across LLM Providers
-
-The Mindmap Generator supports multiple LLM providers, offering a valuable opportunity to analyze differences in how various models approach knowledge extraction. Testing with the historical Durnovo Memo from 1914 revealed distinct processing patterns:
-
-The OpenAI GPT-4o-mini implementation produced the most concise mindmap (2.8 KB), with clear hierarchical organization and precise categorization of concepts. In contrast, DeepSeek generated the most comprehensive output (9.0 KB), with extensive subtopics and details but occasional redundancy.
-
-Claude's processing (4.1 KB) particularly excelled at preserving analytical reasoning and nuanced relationships between concepts, while Gemini (5.5 KB) demonstrated strengths in thematic organization and capturing causal relationships.
-
-This comparison reveals several technical insights:
-
-1. The inverse relationship between conciseness and comprehensiveness across different models
-2. Distinct organizational strategies in how models hierarchically structure information
-3. Domain-specific strengths in how different models handle analytical reasoning versus thematic organization
-4. Variations in representational choices, including emoji selection patterns
-
-The multi-provider capability transforms the system from a single-model application into a comparative analysis tool that provides insights into how different models approach knowledge organization. This makes the system valuable not only for document analysis but also for understanding differences in LLM knowledge representation approaches.
-
 ## Cost-Efficiency Implementation
+
+Another challenge was balancing the quality of extraction against computational cost. LLM API calls can get expensive, especially when you're making hundreds or even thousands of them, and naive implementations could easily rack up substantial costs.
+
+The system implements multiple cost-optimization strategies:
+
+### Provider-Specific Adjustments
+
+First, we estimate the rough cost of each LLM API call based on the provider's pricing model and the purpose of the call within the larger system:
+
+```python
+# Cost tracking (prices in USD per token)
+OPENAI_INPUT_TOKEN_PRICE = 0.15/1000000  # GPT-4o-mini input price
+OPENAI_OUTPUT_TOKEN_PRICE = 0.60/1000000  # GPT-4o-mini output price
+ANTHROPIC_INPUT_TOKEN_PRICE = 0.80/1000000  # Claude 3.5 Haiku input price
+ANTHROPIC_OUTPUT_TOKEN_PRICE = 4.00/1000000  # Claude 3.5 Haiku output price
+DEEPSEEK_CHAT_INPUT_PRICE = 0.27/1000000  # Chat input price (cache miss)
+DEEPSEEK_CHAT_OUTPUT_PRICE = 1.10/1000000  # Chat output price
+DEEPSEEK_REASONER_INPUT_PRICE = 0.14/1000000  # Reasoner input price (cache miss)
+DEEPSEEK_REASONER_OUTPUT_PRICE = 2.19/1000000  # Reasoner output price (includes CoT)
+GEMINI_INPUT_TOKEN_PRICE = 0.075/1000000  # Gemini 2.0 Flash Lite input price estimate
+GEMINI_OUTPUT_TOKEN_PRICE = 0.30/1000000  # Gemini 2.0 Flash Lite output price estimate
+```
 
 The Mindmap Generator implements precise cost tracking and optimization techniques to maximize output quality while minimizing API expenses.
 
 The system employs multiple cost-optimization techniques:
 
 1. Provider-specific cost calculations that account for different pricing models
-2. Extensive caching to prevent redundant API calls:
-   ```python
-   # Check cache first for document type with strict caching
-   doc_type_key = hashlib.md5(document_content[:1000].encode()).hexdigest()
-   if doc_type_key in self._content_cache:
-       doc_type = self._content_cache[doc_type_key]
-   ```
+2. Extensive caching to prevent redundant API calls (similar caching is implemented for topics, subtopics, details, and even emoji selections):
+```python
+# Check cache first for document type with strict caching
+doc_type_key = hashlib.md5(document_content[:1000].encode()).hexdigest()
+if doc_type_key in self._content_cache:
+    doc_type = self._content_cache[doc_type_key]
+else:
+    doc_type = await self.detect_document_type(document_content, request_id)
+    self._content_cache[doc_type_key] = doc_type
+    self._llm_calls['topics'] += 1
+```
 
 3. Concurrency control using semaphores to optimize throughput while respecting rate limits:
    ```python
@@ -1039,63 +1041,9 @@ The system employs multiple cost-optimization techniques:
 
 This comprehensive approach to cost management enables efficient utilization of LLM capabilities while maintaining predictable and reasonable expenses. The detailed token tracking also provides transparency into how computational resources are allocated across different system components.
 
-## Error Handling with Exponential Backoff
-
-The Mindmap Generator implements a sophisticated error handling system that addresses the inherent unreliability of API calls with a principled approach to retries:
-
-```python
-async def _retry_with_exponential_backoff(self, func, *args, **kwargs):
-    """Enhanced retry mechanism with jitter and circuit breaker."""
-    retries = 0
-    max_retries = self.retry_config['max_retries']
-    base_delay = self.retry_config['base_delay']
-    max_delay = self.retry_config['max_delay']
-    
-    while retries < max_retries:
-        try:
-            return await func(*args, **kwargs)
-        except Exception as e:
-            retries += 1
-            if retries >= max_retries:
-                raise
-                
-            delay = min(base_delay * (2 ** (retries - 1)), max_delay)
-            actual_delay = random.uniform(0, delay)
-            
-            logger.warning(f"Attempt {retries}/{max_retries} failed: {str(e)}. "
-                        f"Retrying in {actual_delay:.2f}s")
-            
-            await asyncio.sleep(actual_delay)
-```
-
-This implementation incorporates several established reliability engineering principles:
-
-1. Exponential backoff that increases delay between retries, reducing system load during periods of stress
-2. Jitter (randomization) in retry timing to prevent synchronized retry floods
-3. Maximum delay caps to ensure responsiveness even after multiple failures
-4. Circuit breaker pattern that stops retries after a configurable maximum
-5. Contextual logging that captures failure details for debugging
-
-The retry mechanism is configured through a dedicated configuration object:
-
-```python
-self.retry_config = {
-    'max_retries': 3,
-    'base_delay': 1,
-    'max_delay': 10,
-    'jitter': 0.1,
-    'timeout': 30
-}
-```
-
-This explicit configuration provides fine-grained control over retry behavior. The system can be tuned for different operating environments, from development (with more aggressive retry policies) to production (with more conservative approaches).
-
-By implementing this robust error handling approach, the system maintains stability even when faced with transient API failures, rate limiting, or network issues. This resilience is critical for long-running processes like mindmap generation, where a single unhandled failure could otherwise waste significant computation.
-
-
 ## Detailed Token Usage Reporting
 
-The Mindmap Generator includes a comprehensive token usage reporting system that provides fine-grained analytics on system operation:
+We include a comprehensive token usage reporting system that provides fine-grained analytics on system operation:
 
 ```python
 def print_usage_report(self):
@@ -1468,78 +1416,6 @@ The system includes multiple layers of error handling:
    ```
 
 This comprehensive approach to JSON parsing addresses the common challenge of inconsistent LLM outputs. Rather than failing on imperfect responses, the system implements multiple recovery strategies that transform problematic text into usable data structures. This error recovery capability is essential for maintaining system reliability when working with inherently variable LLM outputs.
-
-
-## 📜 The Durnovo Memo: A Test Case Across LLM Providers
-
-This repository includes a fascinating historical document as a test case - the famous Durnovo memo from 1914, which remarkably predicted World War I and the Russian Revolution. For more about this incredible document, see my article about it [here](https://youtubetranscriptoptimizer.com/blog/04_the_most_impressive_prediction).
-
-### Historical Significance
-
-The [Durnovo Memorandum](sample_input_document_as_markdown__durnovo_memo.md) was written by Pyotr Durnovo, a Russian statesman, to Tsar Nicholas II in February 1914 - months before the outbreak of World War I. With astonishing prescience, Durnovo warned about:
-
-- The inevitability of war between Germany and Russia if European tensions continued
-- How such a war would lead to social revolution in Russia
-- The collapse of monarchies across Europe
-- The specific dangers Russia faced in a prolonged European conflict
-
-The memo has been hailed as one of the most accurate political predictions in modern history, making it an excellent test document for our mindmap generator.
-
-### Cross-Provider Comparison
-
-We've processed this document using all four supported LLM providers to demonstrate how each handles the complex historical content. The results showcase each provider's strengths and unique approaches to concept extraction and organization.
-
-#### OpenAI (GPT-4o-mini)
-
-OpenAI's model produced a concise, well-structured mindmap with clear hierarchical organization:
-
-- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__openai.txt) (2.8 KB)
-- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__openai.html) (5.7 KB)
-- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__openai.md) (2.5 KB)
-
-GPT-4o-mini excels at producing compact, efficient mindmaps that capture essential concepts without redundancy. Its output is characterized by clear categorization and precise language.
-
-#### Anthropic (Claude)
-
-Claude produced a more detailed mindmap with richer contextual information:
-
-- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__anthropic.txt) (4.1 KB)
-- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__anthropic.html) (7.3 KB)
-- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__anthropic.md) (3.8 KB)
-
-Claude's approach tends to include more nuanced historical context and captures subtle relationships between concepts. Its output is particularly strong in preserving the memo's analytical reasoning.
-
-#### DeepSeek
-
-DeepSeek generated the most comprehensive mindmap with extensive subtopics and details:
-
-- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__deepseek.txt) (9.0 KB)
-- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__deepseek.html) (15 KB)
-- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__deepseek.md) (8.4 KB)
-
-DeepSeek's output is notable for its thoroughness and depth of analysis. It extracts more subtleties from the document but occasionally at the cost of some redundancy.
-
-#### Google Gemini
-
-Gemini created a balanced mindmap with strong thematic organization:
-
-- [Mermaid Syntax](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__gemini.txt) (5.5 KB)
-- [Interactive HTML](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap__gemini.html) (9.6 KB)
-- [Markdown Outline](mindmap_outputs/sample_input_document_as_markdown__durnovo_memo_mindmap_outline__gemini.md) (5.0 KB)
-
-Gemini's approach focuses on thematic coherence, with particularly strong extraction of geopolitical concepts and causal relationships between events.
-
-### Key Observations from Cross-Provider Testing
-
-This multi-provider approach reveals interesting patterns:
-
-1. **Content Organization Differences**: Each provider structures the document's concepts differently, revealing their unique approaches to conceptual organization
-2. **Detail Granularity Variance**: The level of detail varies significantly, with DeepSeek providing the most comprehensive extraction and OpenAI the most concise
-3. **Emoji Selection Patterns**: Each model has distinct tendencies in selecting representative emojis for concepts
-4. **Historical Context Sensitivity**: Models differ in how they handle historical context, with Claude showing particular strength in preserving historical nuance
-5. **Structured Knowledge Representation**: The differences highlight various approaches to knowledge organization from the different AI research teams
-
-The sample outputs serve as both demonstration of the tool's capabilities and an interesting comparative study of how different LLM providers approach the same complex historical document.
 
 ## Conclusion: Beyond Traditional LLM Applications
 
