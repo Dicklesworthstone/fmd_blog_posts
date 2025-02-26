@@ -46,9 +46,7 @@ At its core, the system employs a multi-phase approach:
 6. **Redundancy Elimination**: Multiple passes detect and remove duplicative content
 7. **Hierarchical Organization**: The final structure is assembled into a coherent mindmap
 
-
-![Mindmap Architecture:](https://raw.githubusercontent.com/Dicklesworthstone/mindmap-generator/screenshots/mindmap-architecture.png)
-
+![Mindmap Architecture:](https://raw.githubusercontent.com/Dicklesworthstone/mindmap-generator/refs/heads/main/screenshots/mindmap-architecture.png)
 
 Let's explore each of these phases in detail.
 
