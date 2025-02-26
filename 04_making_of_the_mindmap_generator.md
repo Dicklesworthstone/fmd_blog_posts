@@ -1434,3 +1434,17 @@ The key insights from this project have broader implications for LLM application
 5. **Rich Visualization**: The value of LLM-extracted knowledge is amplified through appropriate visualization and presentation.
 
 Perhaps most importantly, this project demonstrates that with careful engineering, LLMs can be guided to perform complex structural tasks that go far beyond the simple text generation they're typically used for. The future of LLM applications lies not in prompting wizardry, but in sophisticated architectures that combine LLM capabilities with traditional software engineering principles.
+
+---
+
+Thanks for reading this blog post! I hope you enjoyed it. If you did, I would really appreciate it if you checked out my web app, [FixMyDocuments.com](https://fixmydocuments.com/). It's a very useful service that leverages powerful AI tools to transform your documents from poorly formatted or scanned PDFs into beautiful, markdown formatted versions that can be easily edited and shared. Once you have processed a document, you can generate all sorts of derived documents from it with a single click, including:
+
+* Real interactive multiple choice quizzes you can take and get graded on (and share with anyone using a publicly accessible custom hosted URL).
+* Anki flashcards for studying, with a slick, interactive interface (and which you can also share with others).
+* A slick HTML presentation slide deck based on your document, or a PDF presentation formatted using LaTeX.
+* A really detailed and penetrating executive summary of your document.
+* Comprehensive "mindmap" diagrams and outlines that explore your document thoroughly.
+* Readability analysis and grade level versions of your original document.
+* Lesson plans generated from your document, where you can choose the level of the target audience.
+
+It's useful for teachers, tutors, business people, and more. When you sign up using a Google account, you get enough free credits that let you process several documents. Give it a try!
