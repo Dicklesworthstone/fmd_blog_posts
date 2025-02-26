@@ -47,9 +47,8 @@ At its core, the system employs a multi-phase approach:
 7. **Hierarchical Organization**: The final structure is assembled into a coherent mindmap
 
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Dicklesworthstone/mindmap-generator/screenshots/mindmap-architecture.svg" alt="Mindmap Architecture" width="1000">
-</p>
+![Mindmap Architecture:](https://raw.githubusercontent.com/Dicklesworthstone/mindmap-generator/screenshots/mindmap-architecture.svg)
+
 
 Let's explore each of these phases in detail.
 
