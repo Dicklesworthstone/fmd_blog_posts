@@ -22,16 +22,18 @@ Unlike in the traditional development, where we use simpler operations like the 
 
 Basically, the wedge product generalizes the determinant to higher dimensions and different contexts. While the determinant gives a scalar quantity representing the volume or area, the wedge product retains the geometric and algebraic structure of the span. The wedge product can be seen as a more general and geometric representation, while the determinant provides a specific scalar measure of that geometric entity. It's sort of beyond the scope of this informal article, but since I don't want anyone to complain that I'm being too vague and "hand wavy" here, I'll quickly give you the formal definition of the wedge product:
 
-The wedge product is an antisymmetric bilinear operation on vectors in a vector space. For vectors $\mathbf{u}$ and $\mathbf{v}$ in an $n$-dimensional vector space $V$, their wedge product $\mathbf{u} \wedge \mathbf{v}$ is a bivector that represents the oriented area spanned by $\mathbf{u}$ and $\mathbf{v}$. The properties of the wedge product are:
+The wedge product (∧) is an antisymmetric bilinear operation on vectors in a vector space. For vectors **u** and **v** in an *n*-dimensional vector space *V*, their wedge product **u ∧ v** is a bivector representing the oriented area spanned by **u** and **v**.
 
-   - **Antisymmetry**: $\mathbf{u} \wedge \mathbf{v} = -(\mathbf{v} \wedge \mathbf{u})$.
+The properties of the wedge product are:
 
-   - **Bilinearity**: The wedge product is linear in both arguments.
-     $(a\mathbf{u} + b\mathbf{v}) \wedge \mathbf{w} = a (\mathbf{u} \wedge \mathbf{w}) + b (\mathbf{v} \wedge \mathbf{w})$
+- **Antisymmetry:**  
+  **u** ∧ **v** = −(**v** ∧ **u**)
 
-   - **Associativity**: The wedge product can be extended to higher-order products:
-     $\mathbf{u} \wedge (\mathbf{v} \wedge \mathbf{w}) = (\mathbf{u} \wedge \mathbf{v}) \wedge \mathbf{w}$
+- **Bilinearity:**  
+  (𝑎**u** + 𝑏**v**) ∧ **w** = 𝑎(**u** ∧ **w**) + 𝑏(**v** ∧ **w**)
 
+- **Associativity:**  
+  **u** ∧ (**v** ∧ **w**) = (**u** ∧ **v**) ∧ **w**
 
 I don't know about you, but even though the ideas aren't intrinsically *that* hard or complicated, it already seems extremely abstract and sort of hard to parse. What's that funky caret **^** symbol again? How does the anti-symmetry come into play exactly? And that whole "bilinearity" thing— it seems like it's loading a lot of complexity in a single word/idea! Anyway, it turns out that if you make the bivector the fundamental object of consideration, and the wedge product the primary operation of consideration, a lot of very nice math sort of "falls out." And it also turns out that this approach can generalize in a less clunky way than the more traditional presentation of linear algebra to higher dimensions and to doing calculus in these higher dimensional spaces, not just algebra. If you just walk through the implications of the axioms about the wedge product and look at what you get when you take the wedge product of two 3-dimensional vectors, you quickly end up with something that looks very similar to how you compute determinants of a matrix recursively using minors and cofactors, and indeed, it's basically the exact same idea but in different notation.
 
