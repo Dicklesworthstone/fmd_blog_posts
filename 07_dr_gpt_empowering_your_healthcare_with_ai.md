@@ -120,10 +120,6 @@ Then paste the raw text or upload the document. The AI will transform even poorl
 
 The original text from the Epic MyChart website might look like this, which is what you pasted into the AI— you can see that the formatting is all messed up and hard to read:
 
-### Here's an example of before and after:
-
-The original text from the Epic MyChart website might look like this, which is what you pasted into the AI— you can see that the formatting is all messed up and hard to read:
-
 ```plaintext
 Results
 COMPREHENSIVE METABOLIC PANEL & CARDIAC MARKERS (Martin)
