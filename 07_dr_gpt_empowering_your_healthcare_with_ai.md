@@ -212,7 +212,7 @@ After processing, the AI might produce:
 
 As you can see, the structured markdown clearly presents critical values in tabular format, making it easy to read and understand.
 
-**Important:** Make sure that, when copying from the AI, you always click the copy button in the top right corner of the chat window, as this will copy the text in a format that preserves the markdown formatting. If you just select and copy the text, it will not preserve the formatting correctly.
+**Important:** Make sure that, when copying from the AI, you always click the copy button in the corner of the chat window, as this will copy the text in a format that preserves the markdown formatting. If you just select and copy the text, it will not preserve the formatting correctly.
 
 The nice thing about markdown is that the text above looks like a nice table when "rendered" as markdown:
 
