@@ -321,7 +321,7 @@ With your bedrock prompt ready, you can now harness the analytical power of fron
 The quality of analysis you receive depends heavily on the quality of your final prompt—the specific questions you ask after presenting all the medical information. Here's the prompt structure I've found most effective:
 
 >
-> Based on EVERYTHING you have seen above, tell me your best estimates of what is wrong with Robert Chen and what his prognosis is, what the best course of action might be under different most likely scenarios, and at each step, explain your reasoning and why you think that (especially which pieces of evidence have the largest impact on your estimate of probabilities from a Bayesian standpoint).
+> Based on EVERYTHING you have seen above, tell me your best estimates of what is wrong with the patient and what his prognosis is, what the best course of action might be under different most likely scenarios, and at each step, explain your reasoning and why you think that (especially which pieces of evidence have the largest impact on your estimate of probabilities from a Bayesian standpoint).
 >
 
 This prompt accomplishes several critical things:
@@ -852,7 +852,7 @@ For example:
 > 
 > ---
 >
-> Based on EVERYTHING you have seen above, tell me your best estimates of what is wrong with Martin and what his prognosis is, what the best course of action might be under different most likely scenarios, and at each step, explain your reasoning and why you think that (especially which pieces of evidence have the largest impact on your estimate of probabilities from a Bayesian standpoint)."
+> Based on EVERYTHING you have seen above, tell me your best estimates of what is wrong with the patient and what his prognosis is, what the best course of action might be under different most likely scenarios, and at each step, explain your reasoning and why you think that (especially which pieces of evidence have the largest impact on your estimate of probabilities from a Bayesian standpoint)."
 >
 
 (Note that in this example, the doctor completely missed or ignored the critical LVOT gradient and LGE fibrosis findings that the AI analysis identified as the most important diagnostic indicators. Instead, they focused on less urgent aspects of his condition and misattributed his symptoms to less concerning causes.)
