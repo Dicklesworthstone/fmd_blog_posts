@@ -323,3 +323,8 @@ And I'm still somewhat sympathetic to Simon Willison's pessimistic outlook aroun
 I view the ACIP as a pragmatic bit of prompt engineering that users and companies can drop into existing systems right now and get some boost in security against these attacks, sort of like installing a firewall or antivirus program on your computer: it's not going to keep out North Korea's ace hackers, but it can prevent and protect you from obvious attacks which you might still be exposed to and which you might currently have no protection against whatsoever. And something's better than nothing, right?
 
 If you'd like to check out the latest version of the ACIP and any new versions that might come out in the future, check out the GitHub repo for the project [here](https://github.com/Dicklesworthstone/acip). I also plan on including the ACIP as an feature within my [Ultimate MCP Server](https://github.com/Dicklesworthstone/ultimate_mcp_server) project in the near future, so that all tool usage requests can be optionally protected using an ACIP preamble. 
+
+| ![Your LLM Protected](https://raw.githubusercontent.com/Dicklesworthstone/fmd_blog_posts/refs/heads/main/blog_08_supplementary_illustration.webp) 
+|:--:| 
+| *Your LLM After Being Protected by ACIP* |
+
