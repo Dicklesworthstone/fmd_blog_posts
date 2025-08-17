@@ -10,8 +10,6 @@ authorImage: "https://pbs.twimg.com/profile_images/1225476100547063809/53jSWs7z_
 authorBio: "Software Engineer and Founder of FixMyDocuments"
 ---
 
-## Making Complex Code Changes with Claude Code and Cursor
-
 How should you approach complex changes to already complex software projects when using agentic coding tools such as Claude Code or Cursor?
 
 I'm talking about when you want to make a big change to how something works in your project that would impact many different code files across different functional areas of a project, where you need to proceed very carefully or you risk really making a mess of your codebase and breaking everything in complex, confusing ways.
@@ -58,5 +56,6 @@ Now you can look through each of the final revised plans and decide which one yo
 If you get stuck in the process with one model and agentic coding tool, try switching to the other one, and then revise that last prompt to explain that you already started the process of implementing the plan document, but that the other coding agent got confused and hit a wall, and you need it to figure out how things went off the rails and then complete the full implementation of the plan, using the notes from the last model in the plan document itself about what has already been done. You can also do the same thing if you simply run out of context space before the entire plan is implemented.
 
 One thing you should absolutely avoid at all costs is allowing CC or Cursor to "compact" the conversation by summarizing what has already been said during the session. Instead, start a new session and prompt it in a similar way, telling it to pick up from where it left off as indicated in the notations in the plan document.
+
 
 Yes, this technique takes a long time to do and a lot of tokens and steps, but it allows you to accomplish very complex things that would otherwise be out of reach of these models/tools. And if you keep these snippets handy in a text editor like I do, it doesn't even take that long (especially because you can be multi-tasking and working on something else while the agents are researching and writing and implementing the plans!).
